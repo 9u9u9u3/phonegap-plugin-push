@@ -35,6 +35,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     private static CordovaWebView gWebView;
     private static List<Bundle> gCachedExtras = Collections.synchronizedList(new ArrayList<Bundle>());
     private static boolean gForeground = false;
+    private static String gChwin = "";
 
     private static String registration_id = "";
 
@@ -167,6 +168,14 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
             });
         } else if (FINISH.equals(action)) {
             callbackContext.success();
+        } else if (SET_CHWIN.equals(action)) {
+            try {
+                setChwin(data.getString(0));
+                callbackContext.success();
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "SET_CHWIN: Got JSON Exception " + e.getMessage());
+                callbackContext.error(e.getMessage());
+            }             
         } else if (HAS_PERMISSION.equals(action)) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
@@ -308,6 +317,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         gForeground = true;
+        gChwin = "";
     }
 
     @Override
@@ -332,6 +342,7 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         super.onDestroy();
         gForeground = false;
         gWebView = null;
+        gChwin = "";        
     }
 
     private void clearAllNotifications() {
@@ -485,6 +496,15 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
     public static boolean isActive() {
         return gWebView != null;
     }
+    
+
+    public static String isInChwin() {
+      return gChwin;
+    }
+
+    public static void setChwin(String s) {
+      gChwin = s;
+    }            
 
     protected static void setRegistrationID(String token) {
         registration_id = token;
