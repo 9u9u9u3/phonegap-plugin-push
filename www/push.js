@@ -99,6 +99,18 @@ PushNotification.prototype.unregister = function(successCallback, errorCallback,
     exec(cleanHandlersAndPassThrough, errorCallback, 'PushNotification', 'unregister', [options]);
 };
 
+ /**
+ * ALF mod
+ */
+
+PushNotification.prototype.setCHwin = function(s) {
+    exec(null, null, 'PushNotification', 'setChwin', [s]);
+};
+PushNotification.prototype.isInChwin = function(successFunction, errorFunction) {
+    exec(successFunction, errorFunction, 'PushNotification', 'isInChwin', []);
+};
+
+
 /**
  * subscribe to a topic
  * @param   {String}      topic               topic to subscribe
@@ -313,6 +325,14 @@ module.exports = {
     hasPermission: function(successCallback, errorCallback) {
         exec(successCallback, errorCallback, 'PushNotification', 'hasPermission', []);
     },
+        
+    setCHwin2: function(b) {
+        exec(null, null, 'PushNotification', 'setChwin', [b]);
+    },
+    
+    isInChwin2: function(successCallback, errorCallback) {
+        exec(successCallback, errorCallback, 'PushNotification', 'isInChwin', []);
+    },      
 
     /**
      * PushNotification Object.
